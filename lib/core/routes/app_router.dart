@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:razinsoft_task_management/core/routes/app_routes.dart';
 import 'package:razinsoft_task_management/features/splash/view/splash_screen.dart';
 import 'package:razinsoft_task_management/features/dashboard/view/dashboard_screen.dart';
 
@@ -9,11 +10,11 @@ import '../config/slide_right_route.dart';
 class AppRouter {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
-      case '/splash-page':
+      case AppRoutes.splashScreen:
         return SlideRightRoute(page: const SplashScreen());
-      case '/dashboard-page':
+      case AppRoutes.dashboard:
         return SlideRightRoute(page: const DashboardScreen());
-      case '/no-internet':
+      case AppRoutes.noInternet:
         return SlideRightRoute(page: const NoInternetPage());
       default:
         return SlideRightRoute(

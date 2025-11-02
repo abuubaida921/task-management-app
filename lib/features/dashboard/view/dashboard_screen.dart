@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:razinsoft_task_management/core/config/app_color.dart';
-import 'package:razinsoft_task_management/features/dashboard/view/tabs/home.dart';
+import 'package:razinsoft_task_management/features/dashboard/view/tabs/home_tab.dart';
+import 'package:razinsoft_task_management/features/dashboard/view/tabs/task_tab.dart';
 import '../widgets/placeholder_widget.dart';
 import 'navbar.dart';
 
@@ -53,7 +54,10 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 taskTabIndex: _taskTabIndex,
                 onTabChanged: (i) => setState(() => _taskTabIndex = i),
               ),
-              PlaceholderPage(title: 'Tasks'),
+              TaskPage(
+                taskTabIndex: _taskTabIndex,
+                onTabChanged: (i) => setState(() => _taskTabIndex = i),
+              ),
               PlaceholderPage(title: 'Calendar'),
             ],
           ),
