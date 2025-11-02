@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:razinsoft_task_management/core/utils/toast_helper.dart';
 
 import '../../../../core/config/app_color.dart';
 
@@ -115,168 +116,172 @@ class _TaskPageState extends State<TaskPage> {
 
           Expanded(
             child: SingleChildScrollView(
-              padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 24.h + topPad),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Task Name',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF0F0F1A),
-                        ),
-                  ),
-                  SizedBox(height: 10.h),
-                  TextField(
-                    controller: _nameCtrl,
-                    textInputAction: TextInputAction.next,
-                    decoration: _roundedInputDecoration(hint: 'Enter Your Task Name'),
-                  ),
-
-                  SizedBox(height: 20.h),
-
-                  Text(
-                    'Task description',
-                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF0F0F1A),
-                        ),
-                  ),
-                  SizedBox(height: 10.h),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20.r),
-                      border: Border.all(color: const Color(0xFFE6E6F0)),
+              // padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 24.h + topPad),
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal:18.r,vertical: 10.r),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.r),
+                  color: Colors.white,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Task Name',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF0F0F1A),
+                          ),
                     ),
-                    child: Stack(
+                    SizedBox(height: 10.h),
+                    TextField(
+                      controller: _nameCtrl,
+                      textInputAction: TextInputAction.next,
+                      decoration: _roundedInputDecoration(hint: 'Enter Your Task Name'),
+                    ),
+
+                    SizedBox(height: 20.h),
+
+                    Text(
+                      'Task description',
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            color: const Color(0xFF0F0F1A),
+                          ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(28.r),
+                        border: Border.all(color: const Color(0xFFE6E6F0)),
+                      ),
+                      child: Stack(
+                        children: [
+                          TextField(
+                            controller: _descCtrl,
+                            maxLines: 5,
+                            maxLength: _descMaxLen,
+                            buildCounter: (context, {required currentLength, required isFocused, maxLength}) => const SizedBox.shrink(),
+                            decoration: InputDecoration(
+                              hintText:
+                                  'Optimize the user interface for our mobile app, ensuring a seamless and delightful user experience. Consider incorporating user feedback and modern design trends to enhance usability and aesthetics.. Consider incorporating user feedback and modern design trends to enhance usability and aesthetics.',
+                              hintStyle: TextStyle(fontSize: 12.sp,color: AppStaticColor.greetingTextColor),
+                              hintMaxLines: 5,
+                              filled: true,
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.all(16.r),
+                              border: InputBorder.none,
+                            ),
+                          ),
+                          Positioned(
+                            right: 12.w,
+                            bottom: 8.h,
+                            child: AnimatedBuilder(
+                              animation: _descCtrl,
+                              builder: (_, __) {
+                                final len = _descCtrl.text.length;
+                                return Text(
+                                  '${len.toString()}/${_descMaxLen.toString()}',
+                                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                                        color: AppStaticColor.primaryColor,
+                                        fontWeight: FontWeight.w600,
+                                      ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+
+                    SizedBox(height: 28.h),
+
+                    Row(
                       children: [
-                        TextField(
-                          controller: _descCtrl,
-                          maxLines: 5,
-                          maxLength: _descMaxLen,
-                          buildCounter: (context, {required currentLength, required isFocused, maxLength}) => const SizedBox.shrink(),
-                          decoration: InputDecoration(
-                            hintText:
-                                'Optimize the user interface for our mobile app, ensuring a seamless and delightful user experience. Consider incorporating user feedback and modern design trends to enhance usability and aesthetics.. Consider incorporating user feedback and modern design trends to enhance usability and aesthetics.',
-                            hintStyle: TextStyle(fontSize: 12.sp,color: AppStaticColor.greetingTextColor),
-                            hintMaxLines: 5,
-                            filled: true,
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.all(16.r),
-                            border: InputBorder.none,
+                        Expanded(
+                          child: Text(
+                            'Start Date',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF0F0F1A),
+                                ),
                           ),
                         ),
-                        Positioned(
-                          right: 12.w,
-                          bottom: 8.h,
-                          child: AnimatedBuilder(
-                            animation: _descCtrl,
-                            builder: (_, __) {
-                              final len = _descCtrl.text.length;
-                              return Text(
-                                '${len.toString()}/${_descMaxLen.toString()}',
-                                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                                      color: AppStaticColor.primaryColor,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                              );
-                            },
+                        SizedBox(width: 16.w),
+                        Expanded(
+                          child: Text(
+                            'End Date',
+                            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF0F0F1A),
+                                ),
                           ),
                         ),
                       ],
                     ),
-                  ),
+                    SizedBox(height: 10.h),
 
-                  SizedBox(height: 28.h),
-
-                  // Dates label row
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'Start Date',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFF0F0F1A),
-                              ),
-                        ),
-                      ),
-                      SizedBox(width: 16.w),
-                      Expanded(
-                        child: Text(
-                          'End Date',
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xFF0F0F1A),
-                              ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 10.h),
-
-                  Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          readOnly: true,
-                          onTap: () => _pickDate(isStart: true),
-                          style: TextStyle(fontSize: 10.sp,color: AppStaticColor.greetingTextColor),
-                          controller: TextEditingController(text: _fmtDate(_startDate).isEmpty ? 'October 15, 2023' : _fmtDate(_startDate)),
-                          decoration: _roundedInputDecoration(
-                            hint: 'October 15, 2023',
-                            suffix: _CalendarSuffix(onTap: () => _pickDate(isStart: true)),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 8.w),
-                      Expanded(
-                        child: TextField(
-                          readOnly: true,
-                          onTap: () => _pickDate(isStart: false),
-                          style: TextStyle(fontSize: 10.sp,color: AppStaticColor.greetingTextColor),
-                          controller: TextEditingController(text: _fmtDate(_endDate).isEmpty ? 'October 15, 2023' : _fmtDate(_endDate)),
-                          decoration: _roundedInputDecoration(
-                            hint: 'October 15, 2023',
-                            suffix: _CalendarSuffix(onTap: () => _pickDate(isStart: false)),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  SizedBox(height: 28.h),
-
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppStaticColor.primaryColor,
-                        foregroundColor: Colors.white,
-                        padding: EdgeInsets.symmetric(vertical: 16.h),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(28.r),
-                        ),
-                        elevation: 0,
-                      ),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Task created')),
-                        );
-                      },
-                      child: Text(
-                        'Create new tasks',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w600,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextField(
+                            readOnly: true,
+                            onTap: () => _pickDate(isStart: true),
+                            style: TextStyle(fontSize: 10.sp,color: AppStaticColor.greetingTextColor),
+                            controller: TextEditingController(text: _fmtDate(_startDate).isEmpty ? 'October 15, 2023' : _fmtDate(_startDate)),
+                            decoration: _roundedInputDecoration(
+                              hint: 'October 15, 2023',
+                              suffix: _CalendarSuffix(onTap: () => _pickDate(isStart: true)),
                             ),
+                          ),
+                        ),
+                        SizedBox(width: 8.w),
+                        Expanded(
+                          child: TextField(
+                            readOnly: true,
+                            onTap: () => _pickDate(isStart: false),
+                            style: TextStyle(fontSize: 10.sp,color: AppStaticColor.greetingTextColor),
+                            controller: TextEditingController(text: _fmtDate(_endDate).isEmpty ? 'October 15, 2023' : _fmtDate(_endDate)),
+                            decoration: _roundedInputDecoration(
+                              hint: 'October 15, 2023',
+                              suffix: _CalendarSuffix(onTap: () => _pickDate(isStart: false)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    SizedBox(height: 28.h),
+
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: AppStaticColor.primaryColor,
+                          foregroundColor: Colors.white,
+                          padding: EdgeInsets.symmetric(vertical: 16.h),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(28.r),
+                          ),
+                          elevation: 0,
+                        ),
+                        onPressed: () {
+                          ToastHelper.successToastMessage('Task created');
+                        },
+                        child: Text(
+                          'Create new tasks',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w600,
+                              ),
+                        ),
                       ),
                     ),
-                  ),
 
-                  SizedBox(height: 24.h),
-                ],
+                    SizedBox(height: 24.h),
+                  ],
+                ),
               ),
             ),
           ),
