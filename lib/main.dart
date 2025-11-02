@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
-import 'package:flutter/gestures.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:razinsoft_task_management/config/hive_constants.dart';
 import 'package:razinsoft_task_management/core/routes/app_router.dart';
@@ -10,7 +8,6 @@ import 'package:razinsoft_task_management/core/routes/app_routes.dart';
 import 'core/config/theme.dart';
 import 'core/utils/global_function.dart';
 import 'core/widgets/connectivity_wrapper.dart';
-import 'infinite_list_page.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 
