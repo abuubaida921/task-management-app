@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'app_color.dart';
 
 AppColors colors(context) => Theme.of(context).extension<AppColors>()!;
 ThemeData getAppTheme(
     {required BuildContext context, required bool isDarkTheme}) {
+  final baseTextTheme = GoogleFonts.poppinsTextTheme(
+    Theme.of(context).textTheme,
+  );
+  final baseColor = isDarkTheme ? AppStaticColor.whiteColor : AppStaticColor.blackColor;
+
   return ThemeData(
     extensions: <ThemeExtension<AppColors>>[
       AppColors(
@@ -33,7 +39,8 @@ ThemeData getAppTheme(
               isDarkTheme ? const Color(0xFF1C1C1E) : const Color(0xFFF3F4F6),
           borderColor: AppStaticColor.primaryLightColor),
     ],
-    fontFamily: 'Lexend',
+    textTheme: baseTextTheme,
+    fontFamily: GoogleFonts.poppins().fontFamily,
     colorScheme: isDarkTheme
         ? ColorScheme.fromSeed(
             seedColor: AppStaticColor.primaryColor,
@@ -52,14 +59,10 @@ ThemeData getAppTheme(
       surfaceTintColor: Colors.transparent,
       backgroundColor:
           isDarkTheme ? AppStaticColor.blackColor : AppStaticColor.whiteColor,
-      titleTextStyle: TextStyle(
-          color: isDarkTheme
-              ? AppStaticColor.whiteColor
-              : AppStaticColor.blackColor,
+      titleTextStyle: GoogleFonts.poppins(
+          color: baseColor,
           fontSize: 16.sp,
-          fontWeight: FontWeight.w600,
-          fontFamily: 'Lexend',
-          overflow: TextOverflow.ellipsis),
+          fontWeight: FontWeight.w600),
       centerTitle: false,
       elevation: 0,
       iconTheme: IconThemeData(
@@ -79,7 +82,7 @@ InputDecorationTheme inputDecorationTheme({
     // floatingLabelBehavior: FloatingLabelBehavior.always,
     isDense: false,
     contentPadding: const EdgeInsets.all(15),
-    hintStyle: const TextStyle(
+    hintStyle: GoogleFonts.poppins(
         color: AppStaticColor.grayColor,
         fontSize: 16,
         fontWeight: FontWeight.w300),

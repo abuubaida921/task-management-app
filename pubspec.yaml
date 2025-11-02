@@ -19,6 +19,7 @@ dependencies:
   connectivity_wrapper: ^1.2.8
   hive_flutter: ^1.1.0
   flutter_easyloading: ^3.0.5
+  google_fonts: ^6.2.1
 
 dev_dependencies:
   flutter_test:
