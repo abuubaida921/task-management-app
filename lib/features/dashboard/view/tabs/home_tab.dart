@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../core/config/app_color.dart';
 import '../../../../core/enums/task_status_enum.dart';
+import '../../../../core/routes/app_routes.dart';
+import '../../../../core/utils/global_function.dart';
 import '../../../../core/utils/month_helper.dart';
 import '../../models/task_model.dart';
 import '../../widgets/summarycard_widget.dart';
@@ -192,13 +194,20 @@ class HomePage extends StatelessWidget {
                   SliverList.separated(
                     itemBuilder: (context, i) {
                       final task = filteredTasks[i];
-                      return Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 20.w),
-                        child: TaskCard(
-                          title: task.title,
-                          description: task.description,
-                          dateLabel: task.dateLabel,
-                          status: task.status,
+                      return InkWell(
+                        onTap: () {
+                          ApGlobalFunctions.navigatorKey.currentState?.pushNamed(
+                            AppRoutes.taskDetailsScreen,
+                          );
+                        },
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: TaskCard(
+                            title: task.title,
+                            description: task.description,
+                            dateLabel: task.dateLabel,
+                            status: task.status,
+                          ),
                         ),
                       );
                     },

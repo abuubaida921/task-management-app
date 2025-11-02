@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:razinsoft_task_management/config/hive_constants.dart';
+import 'package:razinsoft_task_management/core/config/hive_constants.dart';
 import 'package:razinsoft_task_management/core/routes/app_router.dart';
 import 'package:razinsoft_task_management/core/routes/app_routes.dart';
 import 'core/config/theme.dart';
