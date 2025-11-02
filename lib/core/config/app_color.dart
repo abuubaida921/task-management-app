@@ -91,4 +91,5 @@ class AppStaticColor {
   static const Color timeTextColor = Color(0xFF0D101C);
   static const Color greetingTextColor = Color(0xFF6E7591);
   static const Color completedTaskTextColor = Color(0xFF009F76);
+  static const Color taskItemBgColor = Color(0xFFDCE1EF);
 }
