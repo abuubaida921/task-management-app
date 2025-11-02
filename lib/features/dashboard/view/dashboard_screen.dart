@@ -178,125 +178,137 @@ class _HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
-    final dateStr =
-        '${now.day.toString().padLeft(2, '0')} ${getMonthName(now.month)}, ${now.year}';
+    final dateStr = '${now.day.toString().padLeft(2, '0')} ${getMonthName(now.month)}, ${now.year}';
 
     return SafeArea(
-      child: CustomScrollView(
-        slivers: [
-          SliverToBoxAdapter(
-            child: Padding(
-              padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 12.h),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 12.h),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                      Text(
+                        'Good morning Liam!',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                              color: AppStaticColor.greetingTextColor,
+                              fontWeight: FontWeight.w400,
+                            ),
+                      ),
+                      SizedBox(height: 4.h),
+                      Text(
+                        dateStr,
+                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                              color: AppStaticColor.timeTextColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: Image.asset(
+                    'assets/icons/ic_notification.png',
+                    width: 24.r,
+                    height: 24.r,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Expanded(
+            child: CustomScrollView(
+              slivers: [
+                SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 12.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: 16.h),
+                        Text(
+                          'Summary',
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                        SizedBox(height: 12.h),
+                        Row(
                           children: [
-                            Text(
-                              'Good morning Liam!',
-                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                                color: AppStaticColor.greetingTextColor,
-                                fontWeight: FontWeight.w400,
+                            Expanded(
+                              child: SummaryCard(
+                                title: 'Assigned tasks',
+                                value: '21',
+                                bgColor: AppStaticColor.assignedTaskBgColor,
+                                borderColor: AppStaticColor.primaryColor,
+                                valueColor: AppStaticColor.primaryColor,
                               ),
                             ),
-                            SizedBox(height: 4.h),
-                            Text(
-                              dateStr,
-                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                                color: AppStaticColor.timeTextColor,
-                                fontWeight: FontWeight.w500,
+                            SizedBox(width: 12.w),
+                            Expanded(
+                              child: SummaryCard(
+                                title: 'Completed tasks',
+                                value: '31',
+                                bgColor: AppStaticColor.completedTaskBgColor,
+                                borderColor:
+                                    AppStaticColor.completedTaskTextColor,
+                                valueColor:
+                                    AppStaticColor.completedTaskTextColor,
                               ),
                             ),
                           ],
                         ),
-                      ),
-                      IconButton(
-                        onPressed: () {},
-                        icon: Image.asset(
-                          'assets/icons/ic_notification.png',
-                          width: 24.r,
-                          height: 24.r,
+                        SizedBox(height: 18.h),
+                        Text(
+                          'Today tasks',
+                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: AppStaticColor.timeTextColor,
+                              ),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 16.h),
-                  Text(
-                    'Summary',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
+                        SizedBox(height: 12.h),
+                        TasksSegment(index: taskTabIndex, onChanged: onTabChanged),
+                        SizedBox(height: 12.h),
+                      ],
                     ),
                   ),
-                  SizedBox(height: 12.h),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: SummaryCard(
-                          title: 'Assigned tasks',
-                          value: '21',
-                          bgColor: AppStaticColor.assignedTaskBgColor,
-                          borderColor: AppStaticColor.primaryColor,
-                          valueColor: AppStaticColor.primaryColor,
-                        ),
+                ),
+                SliverList.separated(
+                  itemBuilder: (context, i) {
+                    final isComplete =
+                        i.isEven && taskTabIndex == 1 ||
+                        (taskTabIndex == 0 && i % 3 == 0);
+                    if (taskTabIndex == 1 && !isComplete) {
+                      return const SizedBox.shrink();
+                    }
+                    return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: TaskCard(
+                        title: i % 2 == 0
+                            ? 'Homepage Redesign'
+                            : 'E-commerce Checkout Process Redesign',
+                        description:
+                            'Redesign the ${i % 2 == 0 ? 'homepage' : 'checkout process'} of our website to improve user engagement and align with our updated brand. Focusing on improving conversion...',
+                        dateLabel: i % 2 == 0
+                            ? 'October 15, 2023'
+                            : 'December 10, 2023',
+                        status:
+                            isComplete ? TaskStatus.complete : TaskStatus.todo,
                       ),
-                      SizedBox(width: 12.w),
-                      Expanded(
-                        child: SummaryCard(
-                          title: 'Completed tasks',
-                          value: '31',
-                          bgColor: AppStaticColor.completedTaskBgColor,
-                          borderColor: AppStaticColor.completedTaskTextColor,
-                          valueColor: AppStaticColor.completedTaskTextColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 18.h),
-                  Text(
-                    'Today tasks',
-                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                      fontWeight: FontWeight.w500,
-                      color: AppStaticColor.timeTextColor,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  TasksSegment(index: taskTabIndex, onChanged: onTabChanged),
-                  SizedBox(height: 12.h),
-                ],
-              ),
+                    );
+                  },
+                  separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                  itemCount: 6,
+                ),
+                SliverToBoxAdapter(child: SizedBox(height: 120.h)),
+              ],
             ),
           ),
-          SliverList.separated(
-            itemBuilder: (context, i) {
-              final isComplete =
-                  i.isEven && taskTabIndex == 1 ||
-                  (taskTabIndex == 0 && i % 3 == 0);
-              if (taskTabIndex == 1 && !isComplete)
-                return const SizedBox.shrink();
-              return Padding(
-                padding: EdgeInsets.symmetric(horizontal: 20.w),
-                child: TaskCard(
-                  title: i % 2 == 0
-                      ? 'Homepage Redesign'
-                      : 'E-commerce Checkout Process Redesign',
-                  description:
-                      'Redesign the ${i % 2 == 0 ? 'homepage' : 'checkout process'} of our website to improve user engagement and align with our updated brand. Focusing on improving conversion...',
-                  dateLabel: i % 2 == 0
-                      ? 'October 15, 2023'
-                      : 'December 10, 2023',
-                  status: isComplete ? TaskStatus.complete : TaskStatus.todo,
-                ),
-              );
-            },
-            separatorBuilder: (_, __) => SizedBox(height: 12.h),
-            itemCount: 6,
-          ),
-          SliverToBoxAdapter(child: SizedBox(height: 120.h)),
         ],
       ),
     );

@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:razinsoft_task_management/features/dashboard/widgets/segment_item_widget.dart';
 
 class TasksSegment extends StatelessWidget {
-  const TasksSegment({required this.index, required this.onChanged});
+  const TasksSegment({super.key, required this.index, required this.onChanged});
 
   final int index;
   final ValueChanged<int> onChanged;
