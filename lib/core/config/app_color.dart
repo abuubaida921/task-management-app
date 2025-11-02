@@ -78,6 +78,7 @@ class AppStaticColor {
   static const Color primaryLightColor = Color(0xFFF0EDFD);
   static const Color accentColor = Color(0xFFF3F4F6);
   static const Color whiteColor = Color(0xFFFFFFFF);
+  static const Color gradientBottomColor = Color(0xFFDFE4F1);
   static const Color blackColor = Color(0xFF030712);
   static const Color redColor = Color(0xffFF324B);
   static const Color grayColor = Color(0xff617986);

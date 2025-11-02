@@ -30,13 +30,25 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Scaffold(
       extendBody: true,
-      backgroundColor: theme.colorScheme.surface,
+      backgroundColor: Colors.transparent,
       body: Stack(
         children: [
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    AppStaticColor.whiteColor,
+                    AppStaticColor.gradientBottomColor,
+                  ],
+                ),
+              ),
+            ),
+          ),
           PageView(
             controller: _pageController,
             physics: const NeverScrollableScrollPhysics(),
@@ -165,7 +177,6 @@ class _HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
     final now = DateTime.now();
     final dateStr =
         '${now.day.toString().padLeft(2, '0')} ${getMonthName(now.month)}, ${now.year}';
@@ -188,7 +199,7 @@ class _HomePage extends StatelessWidget {
                           children: [
                             Text(
                               'Good morning Liam!',
-                              style: theme.textTheme.titleSmall?.copyWith(
+                              style: Theme.of(context).textTheme.titleSmall?.copyWith(
                                 color: AppStaticColor.greetingTextColor,
                                 fontWeight: FontWeight.w400,
                               ),
@@ -196,7 +207,7 @@ class _HomePage extends StatelessWidget {
                             SizedBox(height: 4.h),
                             Text(
                               dateStr,
-                              style: theme.textTheme.titleMedium?.copyWith(
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
                                 color: AppStaticColor.timeTextColor,
                                 fontWeight: FontWeight.w500,
                               ),
@@ -217,7 +228,7 @@ class _HomePage extends StatelessWidget {
                   SizedBox(height: 16.h),
                   Text(
                     'Summary',
-                    style: theme.textTheme.titleLarge?.copyWith(
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w500,
                     ),
                   ),
@@ -248,7 +259,7 @@ class _HomePage extends StatelessWidget {
                   SizedBox(height: 18.h),
                   Text(
                     'Today tasks',
-                    style: theme.textTheme.titleLarge?.copyWith(
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
                       fontWeight: FontWeight.w500,
                       color: AppStaticColor.timeTextColor,
                     ),
@@ -291,9 +302,3 @@ class _HomePage extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
