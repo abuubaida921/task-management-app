@@ -1,158 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 import 'package:flutter/gestures.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:razinsoft_task_management/config/hive_constants.dart';
+import 'package:razinsoft_task_management/core/routes/app_router.dart';
+import 'package:razinsoft_task_management/core/routes/app_routes.dart';
+import 'core/config/theme.dart';
+import 'core/utils/global_function.dart';
+import 'core/widgets/connectivity_wrapper.dart';
 import 'infinite_list_page.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';import 'package:connectivity_wrapper/connectivity_wrapper.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Hive.initFlutter();
+  await Hive.openBox(HiveConstants.authBox);
+  await Hive.openBox(HiveConstants.userBox);
+  await Hive.openBox(HiveConstants.appSettingsBox);
+  runApp(
+      const ProviderScope(
+        child: GlobalConnectivityWrapper(child: MyApp()),
+      ),
+  );
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home:  MyHomePage(title: 'Flutter Demo Home Page'),
-    );
+  Locale resolveLocal({required String langCode}) {
+    return Locale(langCode);
   }
-}
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
-  final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
-  late int currentPage;
-  late TabController tabController;
-  final List<Color> colors = [Colors.yellow, Colors.red, Colors.green];
-
-  @override
-  void initState() {
-    currentPage = 0;
-    tabController = TabController(length: 3, vsync: this);
-    tabController.animation!.addListener(
-          () {
-        final value = tabController.animation!.value.round();
-        if (value != currentPage && mounted) {
-          changePage(value);
-        }
+  Widget build(BuildContext context, WidgetRef ref) {
+    // _listenToFirebaseMessaging(ref: ref);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    return ScreenUtilInit(
+      designSize: const Size(360, 800), // XD Design Sizes
+      minTextAdapt: true,
+      splitScreenMode: false,
+      builder: (context, child) {
+        return ValueListenableBuilder(
+          valueListenable: Hive.box(HiveConstants.appSettingsBox).listenable(),
+          builder: (context, appSettingsBox, _) {
+            final isDark = appSettingsBox.get(HiveConstants.isDarkMode, defaultValue: false) as bool;
+            return ConnectivityAppWrapper(
+              app: MaterialApp(
+                debugShowCheckedModeBanner: false,
+                navigatorKey: ApGlobalFunctions.navigatorKey,
+                scaffoldMessengerKey: ApGlobalFunctions.getSnackbarKey(),
+                title: 'Task Management',
+                themeMode: isDark ? ThemeMode.dark : ThemeMode.light,
+                theme: getAppTheme(
+                  context: context,
+                  isDarkTheme: false,
+                ),
+                darkTheme: getAppTheme(
+                  context: context,
+                  isDarkTheme: true,
+                ),
+                onGenerateRoute: AppRouter.generateRoute,
+                initialRoute: AppRoutes.splashScreen,
+                builder: EasyLoading.init(),
+              ),
+            );
+          },
+        );
       },
     );
-    super.initState();
-  }
-
-  void changePage(int newPage) {
-    setState(() {
-      currentPage = newPage;
-    });
-  }
-
-  @override
-  void dispose() {
-    tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final Color unselectedColor = colors[currentPage].computeLuminance() < 0.5 ? Colors.black : Colors.white;
-    return SafeArea(
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(widget.title),
-          backgroundColor: Colors.black,
-        ),
-        body: BottomBar(
-          child: TabBar(
-            indicatorPadding: const EdgeInsets.fromLTRB(6, 0, 6, 0),
-            controller: tabController,
-            indicator: UnderlineTabIndicator(
-                borderSide: BorderSide(
-                    color: currentPage == 0
-                        ? colors[0]
-                        : currentPage == 1
-                        ? colors[1]
-                        : unselectedColor,
-                    width: 4),
-                insets: EdgeInsets.fromLTRB(16, 0, 16, 8)),
-            tabs: [
-              SizedBox(
-                height: 55,
-                width: 40,
-                child: Center(
-                    child: Icon(
-                      Icons.home,
-                      color: currentPage == 0 ? colors[0] : unselectedColor,
-                    )),
-              ),
-              SizedBox(
-                height: 55,
-                width: 40,
-                child: Center(
-                    child: Icon(
-                      Icons.search,
-                      color: currentPage == 1 ? colors[1] : unselectedColor,
-                    )),
-              ),
-              SizedBox(
-                height: 55,
-                width: 40,
-                child: Center(
-                    child: Icon(
-                      Icons.add,
-                      color: currentPage == 2 ? colors[2] : unselectedColor,
-                    )),
-              ),
-            ],
-          ),
-          fit: StackFit.expand,
-          icon: (width, height) => Center(
-            child: IconButton(
-              padding: EdgeInsets.zero,
-              onPressed: null,
-              icon: Icon(
-                Icons.arrow_upward_rounded,
-                color: unselectedColor,
-                size: width,
-              ),
-            ),
-          ),
-          borderRadius: BorderRadius.circular(500),
-          duration: Duration(seconds: 1),
-          curve: Curves.decelerate,
-          showIcon: true,
-          width: MediaQuery.of(context).size.width * 0.8,
-          barColor: colors[currentPage].computeLuminance() > 0.5 ? Colors.black : Colors.white,
-          start: 2,
-          end: 0,
-          offset: 10,
-          barAlignment: Alignment.bottomCenter,
-          iconHeight: 35,
-          iconWidth: 35,
-          reverse: false,
-          hideOnScroll: true,
-          scrollOpposite: false,
-          respectSafeArea: true,
-          onBottomBarHidden: () {},
-          onBottomBarShown: () {},
-          body: (context, controller) => TabBarView(
-            controller: tabController,
-            dragStartBehavior: DragStartBehavior.down,
-            physics: const BouncingScrollPhysics(),
-            children: colors.map((e) => InfiniteListPage(controller: controller, color: e)).toList(),
-          ),
-        ),
-      ),
-    );
   }
 }
+
