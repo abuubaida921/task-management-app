@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-
+import 'package:razinsoft_task_management/core/config/app_color.dart';
 
 class FloatingNavBar extends StatelessWidget {
-  const FloatingNavBar({super.key, required this.currentIndex, required this.onChanged});
+  const FloatingNavBar({
+    super.key,
+    required this.currentIndex,
+    required this.onChanged,
+  });
 
   final int currentIndex;
   final ValueChanged<int> onChanged;
@@ -14,19 +17,19 @@ class FloatingNavBar extends StatelessWidget {
     return DecoratedBox(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(28.r),
+        borderRadius: BorderRadius.circular(60.r),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.08),
+            color: Colors.black.withOpacity(0.08),
             blurRadius: 24,
             offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 12.h),
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             NavItem(
               isActive: currentIndex == 0,
@@ -55,6 +58,7 @@ class FloatingNavBar extends StatelessWidget {
 
 class NavItem extends StatelessWidget {
   const NavItem({
+    super.key,
     required this.isActive,
     required this.activeIcon,
     required this.inactiveIcon,
@@ -68,23 +72,26 @@ class NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(20.r),
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        padding: EdgeInsets.all(isActive ? 10.r : 6.r),
-        decoration: BoxDecoration(
-          color: isActive
-              ? const Color(0xFF6C46FF).withValues(alpha: 0.12)
-              : Colors.transparent,
-          shape: BoxShape.circle,
-        ),
-        child: Image.asset(
-          isActive ? activeIcon : inactiveIcon,
-          width: 28.r,
-          height: 28.r,
+    return Expanded(
+      child: InkWell(
+        borderRadius: BorderRadius.circular(32.r),
+        onTap: onTap,
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          padding: EdgeInsets.all(isActive ? 10.r : 6.r),
+          decoration: BoxDecoration(
+            color: isActive ? AppStaticColor.assignedTaskBgColor.withValues(alpha: .7) : Colors.transparent,
+            borderRadius: BorderRadius.circular(32.r),
+          ),
+          alignment: Alignment.center,
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              isActive ? activeIcon : inactiveIcon,
+              width: 20.r,
+              height: 20.r,
+            ),
+          ),
         ),
       ),
     );

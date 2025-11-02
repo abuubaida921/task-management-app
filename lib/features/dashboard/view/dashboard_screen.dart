@@ -3,13 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:razinsoft_task_management/core/config/app_color.dart';
 import 'package:razinsoft_task_management/features/dashboard/view/tabs/home.dart';
-
-import '../../../core/enums/task_status_enum.dart';
-import '../../../core/utils/month_helper.dart';
 import '../widgets/placeholder_widget.dart';
-import '../widgets/summarycard_widget.dart';
-import '../widgets/taskcard_widget.dart';
-import '../widgets/tasksegment_widget.dart';
 import 'navbar.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
