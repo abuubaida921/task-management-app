@@ -169,6 +169,19 @@ class _NavItem extends StatelessWidget {
   }
 }
 
+class _Task {
+  final String title;
+  final String description;
+  final String dateLabel;
+  final TaskStatus status;
+  const _Task({
+    required this.title,
+    required this.description,
+    required this.dateLabel,
+    required this.status,
+  });
+}
+
 class _HomePage extends StatelessWidget {
   const _HomePage({required this.taskTabIndex, required this.onTabChanged});
 
@@ -178,11 +191,64 @@ class _HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final now = DateTime.now();
-    final dateStr = '${now.day.toString().padLeft(2, '0')} ${getMonthName(now.month)}, ${now.year}';
+    final dateStr =
+        '${now.day.toString().padLeft(2, '0')} ${getMonthName(now.month)}, ${now.year}';
+
+
+    final List<_Task> tasks = const [
+      _Task(
+        title: 'Homepage Redesign',
+        description:
+            'Revamp the homepage to align with the latest brand guidelines and improve engagement metrics.',
+        dateLabel: 'October 15, 2023',
+        status: TaskStatus.todo,
+      ),
+      _Task(
+        title: 'Checkout Flow Optimization',
+        description:
+            'Analyze and redesign the checkout steps to reduce drop-offs and improve conversion.',
+        dateLabel: 'December 10, 2023',
+        status: TaskStatus.complete,
+      ),
+      _Task(
+        title: 'Push Notification Setup',
+        description:
+            'Integrate FCM and create topic-based notifications for marketing campaigns.',
+        dateLabel: 'November 07, 2023',
+        status: TaskStatus.todo,
+      ),
+      _Task(
+        title: 'User Onboarding Revamp',
+        description:
+            'Shorten onboarding and add progress indicators to increase completion rate.',
+        dateLabel: 'November 22, 2023',
+        status: TaskStatus.complete,
+      ),
+      _Task(
+        title: 'Dark Mode QA',
+        description:
+            'Test dark mode across modules and fix contrast and accessibility issues.',
+        dateLabel: 'January 04, 2024',
+        status: TaskStatus.todo,
+      ),
+      _Task(
+        title: 'Analytics Dashboard',
+        description:
+            'Build a product analytics dashboard with funnels and retention cohorts.',
+        dateLabel: 'February 12, 2024',
+        status: TaskStatus.complete,
+      ),
+    ];
+
+
+    final List<_Task> filteredTasks = taskTabIndex == 1
+        ? tasks.where((t) => t.status == TaskStatus.complete).toList()
+        : tasks;
 
     return SafeArea(
       child: Column(
         children: [
+
           Padding(
             padding: EdgeInsets.fromLTRB(20.w, 20.h, 20.w, 12.h),
             child: Row(
@@ -221,11 +287,13 @@ class _HomePage extends StatelessWidget {
               ],
             ),
           ),
+
           Expanded(
             child: CustomScrollView(
               slivers: [
                 SliverToBoxAdapter(
                   child: Padding(
+                    // Top padding is 0 because header already provided top spacing
                     padding: EdgeInsets.fromLTRB(20.w, 0, 20.w, 12.h),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -278,33 +346,37 @@ class _HomePage extends StatelessWidget {
                     ),
                   ),
                 ),
-                SliverList.separated(
-                  itemBuilder: (context, i) {
-                    final isComplete =
-                        i.isEven && taskTabIndex == 1 ||
-                        (taskTabIndex == 0 && i % 3 == 0);
-                    if (taskTabIndex == 1 && !isComplete) {
-                      return const SizedBox.shrink();
-                    }
-                    return Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: TaskCard(
-                        title: i % 2 == 0
-                            ? 'Homepage Redesign'
-                            : 'E-commerce Checkout Process Redesign',
-                        description:
-                            'Redesign the ${i % 2 == 0 ? 'homepage' : 'checkout process'} of our website to improve user engagement and align with our updated brand. Focusing on improving conversion...',
-                        dateLabel: i % 2 == 0
-                            ? 'October 15, 2023'
-                            : 'December 10, 2023',
-                        status:
-                            isComplete ? TaskStatus.complete : TaskStatus.todo,
+                if (filteredTasks.isEmpty)
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 40.h),
+                      child: Center(
+                        child: Text(
+                          'No tasks to show',
+                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: AppStaticColor.timeTextColor,
+                              ),
+                        ),
                       ),
-                    );
-                  },
-                  separatorBuilder: (_, __) => SizedBox(height: 12.h),
-                  itemCount: 6,
-                ),
+                    ),
+                  )
+                else
+                  SliverList.separated(
+                    itemBuilder: (context, i) {
+                      final task = filteredTasks[i];
+                      return Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.w),
+                        child: TaskCard(
+                          title: task.title,
+                          description: task.description,
+                          dateLabel: task.dateLabel,
+                          status: task.status,
+                        ),
+                      );
+                    },
+                    separatorBuilder: (_, __) => SizedBox(height: 12.h),
+                    itemCount: filteredTasks.length,
+                  ),
                 SliverToBoxAdapter(child: SizedBox(height: 120.h)),
               ],
             ),
