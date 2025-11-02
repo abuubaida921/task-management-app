@@ -18,9 +18,12 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      ApGlobalFunctions.navigatorKey.currentState
-          ?.pushNamedAndRemoveUntil(
-          AppRoutes.dashboard, (route) => false);
+      Future.delayed(const Duration(milliseconds: 500), () {
+        ApGlobalFunctions.navigatorKey.currentState?.pushNamedAndRemoveUntil(
+          AppRoutes.dashboard,
+          (route) => false,
+        );
+      });
     });
   }
 
@@ -35,7 +38,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
             width: 150.h,
             height: 80.h,
             fit: BoxFit.contain,
-          )
+          ),
         ],
       ),
     );
