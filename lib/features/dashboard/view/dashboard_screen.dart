@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:razinsoft_task_management/core/config/app_color.dart';
 
 class DashboardScreen extends ConsumerStatefulWidget {
   const DashboardScreen({super.key});
@@ -183,16 +184,17 @@ class _HomePage extends StatelessWidget {
                           children: [
                             Text(
                               'Good morning Liam!',
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                color: const Color(0xFF81829B),
-                                fontWeight: FontWeight.w600,
+                              style: theme.textTheme.titleSmall?.copyWith(
+                                color: AppStaticColor.greetingTextColor,
+                                fontWeight: FontWeight.w400,
                               ),
                             ),
                             SizedBox(height: 4.h),
                             Text(
                               dateStr,
-                              style: theme.textTheme.headlineSmall?.copyWith(
-                                fontWeight: FontWeight.w700,
+                              style: theme.textTheme.titleMedium?.copyWith(
+                                color: AppStaticColor.timeTextColor,
+                                fontWeight: FontWeight.w500,
                               ),
                             ),
                           ],
@@ -200,15 +202,15 @@ class _HomePage extends StatelessWidget {
                       ),
                       IconButton(
                         onPressed: () {},
-                        icon: const Icon(Icons.notifications_none_rounded),
+                        icon: Image.asset('assets/icons/ic_notification.png', width: 24.r, height: 24.r),
                       ),
                     ],
                   ),
                   SizedBox(height: 16.h),
                   Text(
                     'Summary',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
                     ),
                   ),
                   SizedBox(height: 12.h),
@@ -218,8 +220,8 @@ class _HomePage extends StatelessWidget {
                         child: _SummaryCard(
                           title: 'Assigned tasks',
                           value: '21',
-                          borderColor: const Color(0xFF6C46FF),
-                          valueColor: const Color(0xFF6C46FF),
+                          borderColor: AppStaticColor.primaryColor,
+                          valueColor: AppStaticColor.primaryColor,
                         ),
                       ),
                       SizedBox(width: 12.w),
@@ -227,8 +229,8 @@ class _HomePage extends StatelessWidget {
                         child: _SummaryCard(
                           title: 'Completed tasks',
                           value: '31',
-                          borderColor: const Color(0xFF5DD18A),
-                          valueColor: const Color(0xFF2FB365),
+                          borderColor: AppStaticColor.completedTaskTextColor,
+                          valueColor: AppStaticColor.completedTaskTextColor
                         ),
                       ),
                     ],
@@ -236,8 +238,9 @@ class _HomePage extends StatelessWidget {
                   SizedBox(height: 18.h),
                   Text(
                     'Today tasks',
-                    style: theme.textTheme.headlineSmall?.copyWith(
-                      fontWeight: FontWeight.w800,
+                    style: theme.textTheme.titleLarge?.copyWith(
+                      fontWeight: FontWeight.w500,
+                      color: AppStaticColor.timeTextColor
                     ),
                   ),
                   SizedBox(height: 12.h),
@@ -303,7 +306,7 @@ class _SummaryCard extends StatelessWidget {
     return Container(
       padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: borderColor.withValues(alpha: 0.1),
         borderRadius: BorderRadius.circular(16.r),
         border: Border.all(color: borderColor.withValues(alpha: 0.6), width: 2),
       ),
@@ -312,8 +315,8 @@ class _SummaryCard extends StatelessWidget {
         children: [
           Text(
             title,
-            style: theme.textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
+            style: theme.textTheme.titleSmall?.copyWith(
+              fontWeight: FontWeight.w500,
             ),
           ),
           SizedBox(height: 10.h),
@@ -385,7 +388,7 @@ class _SegmentItem extends StatelessWidget {
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          padding: EdgeInsets.symmetric(vertical: 12.h),
+          padding: EdgeInsets.symmetric(vertical: 6.h),
           decoration: BoxDecoration(
             color: selected ? const Color(0xFF6C46FF) : Colors.transparent,
             borderRadius: BorderRadius.circular(32.r),
@@ -393,7 +396,7 @@ class _SegmentItem extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             label,
-            style: TextStyle(
+            style: TextStyle(fontSize: 14,
               color: selected ? Colors.white : const Color(0xFF6C46FF),
               fontWeight: FontWeight.w800,
             ),

@@ -87,4 +87,8 @@ class AppStaticColor {
   static const Color blueColor = Color(0xFF306AFF);
   static const Color assignedTaskBgColor = Color(0xFFEEEFFF);
   static const Color completedTaskBgColor = Color(0xFFDEFFE8);
+
+  static const Color timeTextColor = Color(0xFF0D101C);
+  static const Color greetingTextColor = Color(0xFF6E7591);
+  static const Color completedTaskTextColor = Color(0xFF009F76);
 }
