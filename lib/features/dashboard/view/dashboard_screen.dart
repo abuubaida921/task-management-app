@@ -54,10 +54,7 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
                 taskTabIndex: _taskTabIndex,
                 onTabChanged: (i) => setState(() => _taskTabIndex = i),
               ),
-              TaskPage(
-                taskTabIndex: _taskTabIndex,
-                onTabChanged: (i) => setState(() => _taskTabIndex = i),
-              ),
+              TaskPage(),
               PlaceholderPage(title: 'Calendar'),
             ],
           ),
